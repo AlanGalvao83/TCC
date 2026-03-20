@@ -4,119 +4,373 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verificador de Postura de Corrida</title>
+  <title>PosturaRun — Verificador de Postura de Corrida</title>
   <meta name="description"
     content="Analise sua postura de corrida com inteligência artificial. Upload de vídeo e feedback biomecânico instantâneo.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- KaTeX para fórmulas matemáticas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
-  <header class="app-header">
-    <div class="header-inner">
+  <!-- Mobile Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
       <div class="logo">
+        <span class="logo-icon">🏃</span>
         <span class="logo-text">PosturaRun</span>
       </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Fechar menu">✕</button>
     </div>
-  </header>
 
-  <main class="main">
-    <!-- Hero -->
-    <section class="hero">
-      <h1 class="hero-title">Análise de <span class="gradient-text">Postura</span> de Corrida</h1>
-      <p class="hero-sub">Envie um vídeo da sua corrida e receba feedback biomecânico detalhado em segundos.</p>
-    </section>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-section="analyzer" href="#analyzer">
+        <span class="nav-icon">⚡</span>
+        <span class="nav-label">Analisador</span>
+      </a>
+      <a class="nav-item" data-section="infographic" href="#infographic">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Infográfico</span>
+      </a>
+      <a class="nav-item" data-section="mindmap" href="#mindmap">
+        <span class="nav-icon">🧠</span>
+        <span class="nav-label">Mapa Mental</span>
+      </a>
+      <a class="nav-item" data-section="podcast" href="#podcast">
+        <span class="nav-icon">🎙️</span>
+        <span class="nav-label">Podcast</span>
+      </a>
+      <a class="nav-item" data-section="tech" href="#tech">
+        <span class="nav-icon">🔬</span>
+        <span class="nav-label">Análise Técnica</span>
+      </a>
+    </nav>
 
-    <!-- Upload Card -->
-    <section class="card upload-card">
-      <form id="uploadForm">
-        <label class="drop-zone" id="dropZone" for="videoInput">
-          <div class="drop-icon">📹</div>
-          <div class="drop-text">
-            <span class="drop-main">Arraste seu vídeo aqui</span>
-            <span class="drop-sub">ou clique para selecionar</span>
+    <div class="sidebar-footer">
+      <p>TCC · IA aplicada ao esporte</p>
+      <p>Alan Galvão · 2025</p>
+    </div>
+  </aside>
+
+  <!-- App Shell -->
+  <div class="app-shell">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Analisador de Postura</div>
+      <span class="badge">Beta</span>
+    </header>
+
+    <!-- ======================== SEÇÕES ======================== -->
+    <main class="content">
+
+      <!-- ===== ANALISADOR ===== -->
+      <section id="analyzer" class="page active">
+        <div class="page-inner">
+          <div class="hero">
+            <h1 class="hero-title">Análise de <span class="gradient-text">Postura</span> de Corrida</h1>
+            <p class="hero-sub">Envie um vídeo da sua corrida e receba feedback biomecânico detalhado em segundos.</p>
           </div>
-          <div class="file-name" id="fileName">MP4, MOV, AVI — até qualquer tamanho</div>
-          <input type="file" id="videoInput" accept="video/*" required>
-        </label>
 
-        <div class="preview-wrap" id="previewWrap" style="display:none">
-          <video id="previewVideo" controls playsinline></video>
+          <div class="card upload-card">
+            <form id="uploadForm">
+              <label class="drop-zone" id="dropZone" for="videoInput">
+                <div class="drop-icon">📹</div>
+                <div class="drop-text">
+                  <span class="drop-main">Arraste seu vídeo aqui</span>
+                  <span class="drop-sub">ou clique para selecionar</span>
+                </div>
+                <div class="file-name" id="fileName">MP4, MOV, AVI</div>
+                <input type="file" id="videoInput" accept="video/*" required>
+              </label>
+
+              <div class="preview-wrap" id="previewWrap" style="display:none">
+                <video id="previewVideo" controls playsinline></video>
+              </div>
+
+              <button type="submit" class="btn-analyze" id="btnAnalyze">
+                <span class="btn-icon">⚡</span>
+                <span class="btn-label">Analisar Postura</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="loading-wrap" id="loadingWrap" style="display:none">
+            <div class="spinner"></div>
+            <p class="loading-text">Analisando postura biomecânica…</p>
+            <p class="loading-sub">Isso pode levar alguns segundos dependendo do vídeo</p>
+          </div>
+
+          <div id="resultSection" style="display:none; flex-direction:column; gap:16px;">
+            <div class="status-banner" id="statusBanner">
+              <span class="status-icon" id="statusIcon"></span>
+              <div>
+                <div class="status-title" id="statusTitle"></div>
+                <div class="status-sub" id="statusSub"></div>
+              </div>
+            </div>
+            <div class="card">
+              <h2 class="section-title">📐 Ângulos Medidos</h2>
+              <div class="angles-grid" id="anglesGrid"></div>
+            </div>
+            <div class="issues-row">
+              <div class="card side-card">
+                <h2 class="section-title">🦵 Lado Esquerdo</h2>
+                <div id="issuesLeft"></div>
+                <div id="corrLeft"></div>
+              </div>
+              <div class="card side-card">
+                <h2 class="section-title">🦵 Lado Direito</h2>
+                <div id="issuesRight"></div>
+                <div id="corrRight"></div>
+              </div>
+            </div>
+            <div class="visuals-grid" id="visualsGrid" style="display:none">
+              <div class="card visual-card" id="gifCard" style="display:none">
+                <h2 class="section-title">🎬 Prévia Anotada</h2>
+                <img id="overlayGif" alt="Prévia anotada (GIF)" class="visual-img">
+              </div>
+              <div class="card visual-card" id="bestCard" style="display:none">
+                <h2 class="section-title">📸 Melhor Frame</h2>
+                <p class="visual-caption">Verde: medido · Amarelo: postura ideal</p>
+                <img id="bestFrame" alt="Melhor frame" class="visual-img">
+              </div>
+            </div>
+            <div class="card download-card" id="downloadCard" style="display:none">
+              <a id="overlayDownload" href="#" download class="btn-download">⬇️ Baixar vídeo anotado</a>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <button type="submit" class="btn-analyze" id="btnAnalyze">
-          <span class="btn-icon">⚡</span>
-          <span class="btn-label">Analisar Postura</span>
-        </button>
-      </form>
-    </section>
-
-    <!-- Loading -->
-    <div class="loading-wrap" id="loadingWrap" style="display:none">
-      <div class="spinner"></div>
-      <p class="loading-text">Analisando postura biomecânica…</p>
-      <p class="loading-sub">Isso pode levar alguns segundos dependendo do vídeo</p>
-    </div>
-
-    <!-- Result Section -->
-    <section id="resultSection" style="display:none">
-      <!-- Status Banner -->
-      <div class="status-banner" id="statusBanner">
-        <span class="status-icon" id="statusIcon"></span>
-        <div>
-          <div class="status-title" id="statusTitle"></div>
-          <div class="status-sub" id="statusSub"></div>
+      <!-- ===== INFOGRÁFICO ===== -->
+      <section id="infographic" class="page">
+        <div class="page-inner">
+          <div class="page-hero">
+            <h1>📊 Infográfico</h1>
+            <p>Visão geral visual sobre a biomecânica da corrida e os pontos de análise do sistema.</p>
+          </div>
+          <div class="card media-card">
+            <img src="/static/media/infografico.png" alt="Infográfico de biomecânica da corrida"
+              class="media-full-img" id="infograficImg"
+              onerror="this.parentElement.innerHTML='<div class=\'media-placeholder\'>📊<p>infografico.png não encontrado</p><p class=\'hint\'>Copie o arquivo para <code>public/media/infografico.png</code></p></div>'">
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Angles Grid -->
-      <div class="card">
-        <h2 class="section-title">📐 Ângulos Medidos</h2>
-        <div class="angles-grid" id="anglesGrid"></div>
-      </div>
-
-      <!-- Issues & Corrections -->
-      <div class="issues-row">
-        <div class="card side-card">
-          <h2 class="section-title">🦵 Lado Esquerdo</h2>
-          <div id="issuesLeft"></div>
-          <div id="corrLeft"></div>
+      <!-- ===== MAPA MENTAL ===== -->
+      <section id="mindmap" class="page">
+        <div class="page-inner">
+          <div class="page-hero">
+            <h1>🧠 Mapa Mental</h1>
+            <p>Estrutura conceitual do projeto: tecnologias, conceitos biomecânicos e fluxo de análise.</p>
+          </div>
+          <div class="card media-card">
+            <img src="/static/media/mapa-mental.png" alt="Mapa mental do projeto"
+              class="media-full-img"
+              onerror="this.parentElement.innerHTML='<div class=\'media-placeholder\'>🧠<p>mapa-mental.png não encontrado</p><p class=\'hint\'>Copie o arquivo para <code>public/media/mapa-mental.png</code></p></div>'">
+          </div>
         </div>
-        <div class="card side-card">
-          <h2 class="section-title">🦵 Lado Direito</h2>
-          <div id="issuesRight"></div>
-          <div id="corrRight"></div>
+      </section>
+
+      <!-- ===== PODCAST ===== -->
+      <section id="podcast" class="page">
+        <div class="page-inner">
+          <div class="page-hero">
+            <h1>🎙️ Podcast</h1>
+            <p>Episódio sobre o projeto e a aplicação de IA na análise biomecânica de corrida.</p>
+          </div>
+          <div class="card podcast-card">
+            <div class="podcast-cover">🎙️</div>
+            <div class="podcast-info">
+              <h2 class="podcast-title">Seu celular virou um laboratório biomecânico</h2>
+              <p class="podcast-desc">Como a inteligência artificial está transformando a análise de corrida, antes restrita a laboratórios especializados, em algo acessível pelo smartphone.</p>
+              <audio controls class="podcast-player" id="podcastAudio"
+                onerror="document.getElementById('audioError').style.display='block'">
+                <source src="/static/media/podcast.m4a" type="audio/mp4">
+                Seu navegador não suporta o elemento de áudio.
+              </audio>
+              <p id="audioError" class="audio-error" style="display:none">
+                ⚠️ Arquivo de áudio não encontrado. Copie para <code>public/media/podcast.m4a</code>
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Visuals -->
-      <div class="visuals-grid" id="visualsGrid" style="display:none">
-        <div class="card visual-card" id="gifCard" style="display:none">
-          <h2 class="section-title">🎬 Prévia Anotada</h2>
-          <img id="overlayGif" alt="Prévia anotada (GIF)" class="visual-img">
+      <!-- ===== ANÁLISE TÉCNICA ===== -->
+      <section id="tech" class="page">
+        <div class="page-inner">
+          <div class="page-hero">
+            <h1>🔬 Análise Técnica</h1>
+            <p>Stack tecnológico completo e a matemática por trás das decisões do sistema.</p>
+          </div>
+
+          <!-- Stack -->
+          <div class="card">
+            <h2 class="section-title">⚙️ Stack Tecnológico</h2>
+            <div class="tech-grid">
+              <div class="tech-item">
+                <div class="tech-icon">🐍</div>
+                <div class="tech-name">FastAPI</div>
+                <div class="tech-desc">API REST assíncrona em Python</div>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">👁️</div>
+                <div class="tech-name">MediaPipe Pose</div>
+                <div class="tech-desc">33 landmarks do esqueleto via deep learning (Google)</div>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">📷</div>
+                <div class="tech-name">OpenCV</div>
+                <div class="tech-desc">Processamento frame a frame e anotação visual</div>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">🔢</div>
+                <div class="tech-name">NumPy</div>
+                <div class="tech-desc">Álgebra vetorial para cálculo dos ângulos</div>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">🎬</div>
+                <div class="tech-name">imageio + FFmpeg</div>
+                <div class="tech-desc">Exportação de vídeo MP4 e GIF anotados</div>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">🚀</div>
+                <div class="tech-name">Railway + Docker</div>
+                <div class="tech-desc">Deploy em container cloud com Python 3.11</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Landmarks -->
+          <div class="card">
+            <h2 class="section-title">🦴 Pontos de Referência (Landmarks)</h2>
+            <p class="card-desc">O MediaPipe Pose detecta <strong>33 pontos</strong> do corpo humano com coordenadas x, y, z normalizadas. O sistema utiliza 10 deles:</p>
+            <div class="landmarks-grid">
+              <div class="landmark-row header">
+                <span>Landmark</span><span>Índice</span><span>Articulação</span>
+              </div>
+              <div class="landmark-row"><span>LEFT_SHOULDER</span><span>11</span><span>Ombro esquerdo</span></div>
+              <div class="landmark-row"><span>LEFT_HIP</span><span>23</span><span>Quadril esquerdo</span></div>
+              <div class="landmark-row"><span>LEFT_KNEE</span><span>25</span><span>Joelho esquerdo</span></div>
+              <div class="landmark-row"><span>LEFT_ANKLE</span><span>27</span><span>Tornozelo esquerdo</span></div>
+              <div class="landmark-row"><span>LEFT_FOOT_INDEX</span><span>31</span><span>Ponta do pé esquerdo</span></div>
+              <div class="landmark-row alt"><span>RIGHT_SHOULDER</span><span>12</span><span>Ombro direito</span></div>
+              <div class="landmark-row alt"><span>RIGHT_HIP</span><span>24</span><span>Quadril direito</span></div>
+              <div class="landmark-row alt"><span>RIGHT_KNEE</span><span>26</span><span>Joelho direito</span></div>
+              <div class="landmark-row alt"><span>RIGHT_ANKLE</span><span>28</span><span>Tornozelo direito</span></div>
+              <div class="landmark-row alt"><span>RIGHT_FOOT_INDEX</span><span>32</span><span>Ponta do pé direito</span></div>
+            </div>
+          </div>
+
+          <!-- Math -->
+          <div class="card math-card">
+            <h2 class="section-title">📐 A Matemática dos Ângulos Articulares</h2>
+            <p class="card-desc">Para calcular o ângulo em uma articulação <strong>B</strong> formada pelos pontos A–B–C, o sistema define dois vetores saindo de B:</p>
+
+            <div class="math-vectors">
+              <div class="math-vector-eq" id="eq-u"></div>
+              <div class="math-vector-eq" id="eq-v"></div>
+            </div>
+
+            <p class="card-desc" style="margin-top:16px;">O ângulo θ é calculado via <strong>produto escalar</strong> dividido pelo produto das normas (magnitudes):</p>
+
+            <div class="math-formula-box" id="eq-theta"></div>
+
+            <div class="math-terms">
+              <div class="math-term">
+                <span class="math-sym" id="eq-dot"></span>
+                <span class="math-def">produto escalar entre os vetores</span>
+              </div>
+              <div class="math-term">
+                <span class="math-sym" id="eq-norm"></span>
+                <span class="math-def">norma (comprimento) do vetor u</span>
+              </div>
+            </div>
+
+            <h3 class="code-title">Implementação em Python (NumPy)</h3>
+            <pre class="code-block"><code>def _angle(a, b, c):
+    ab = np.array([a[0]-b[0], a[1]-b[1]])  # vetor u = A - B
+    cb = np.array([c[0]-b[0], c[1]-b[1]])  # vetor v = C - B
+
+    # Normaliza para vetores unitários
+    nab = ab / (np.linalg.norm(ab) + 1e-8)
+    ncb = cb / (np.linalg.norm(cb) + 1e-8)
+
+    # Produto escalar → arccos → graus
+    cos_ang = np.clip(np.dot(nab, ncb), -1.0, 1.0)
+    return float(np.degrees(np.arccos(cos_ang)))</code></pre>
+          </div>
+
+          <!-- Thresholds -->
+          <div class="card">
+            <h2 class="section-title">🎯 Limiares Biomecânicos</h2>
+            <p class="card-desc">Cada ângulo calculado é comparado com intervalos da literatura biomecânica de corrida:</p>
+            <div class="thresholds-table">
+              <div class="th-row header">
+                <span>Articulação</span><span>Mínimo</span><span>Ideal</span><span>Máximo</span>
+              </div>
+              <div class="th-row">
+                <span>🔵 Tronco (inclinação)</span>
+                <span class="th-min">4°</span><span class="th-ok">6°</span><span class="th-max">8°</span>
+              </div>
+              <div class="th-row">
+                <span>🔵 Joelho (extensão)</span>
+                <span class="th-min">150°</span><span class="th-ok">160°</span><span class="th-max">170°</span>
+              </div>
+              <div class="th-row">
+                <span>🔵 Quadril</span>
+                <span class="th-min">165°</span><span class="th-ok">170°</span><span class="th-max">175°</span>
+              </div>
+              <div class="th-row">
+                <span>🔵 Tornozelo</span>
+                <span class="th-min">80°</span><span class="th-ok">90°</span><span class="th-max">100°</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pipeline -->
+          <div class="card">
+            <h2 class="section-title">🔄 Fluxo de Processamento</h2>
+            <div class="pipeline">
+              <div class="pipe-step"><div class="pipe-num">1</div><div class="pipe-text"><strong>Upload</strong><br>Vídeo enviado via multipart/form-data</div></div>
+              <div class="pipe-arrow">↓</div>
+              <div class="pipe-step"><div class="pipe-num">2</div><div class="pipe-text"><strong>OpenCV</strong><br>Leitura frame a frame do vídeo</div></div>
+              <div class="pipe-arrow">↓</div>
+              <div class="pipe-step"><div class="pipe-num">3</div><div class="pipe-text"><strong>MediaPipe Pose</strong><br>Extração dos 33 landmarks (x, y, z) por frame</div></div>
+              <div class="pipe-arrow">↓</div>
+              <div class="pipe-step"><div class="pipe-num">4</div><div class="pipe-text"><strong>Trigonometria Vetorial</strong><br>Cálculo de 8 ângulos articulares via arccos(u⃗·v⃗/|u⃗||v⃗|)</div></div>
+              <div class="pipe-arrow">↓</div>
+              <div class="pipe-step"><div class="pipe-num">5</div><div class="pipe-text"><strong>Mediana temporal</strong><br>Agregação robusta dos ângulos ao longo dos frames</div></div>
+              <div class="pipe-arrow">↓</div>
+              <div class="pipe-step"><div class="pipe-num">6</div><div class="pipe-text"><strong>Avaliação biomecânica</strong><br>Comparação com limiares → issues e correções</div></div>
+              <div class="pipe-arrow">↓</div>
+              <div class="pipe-step"><div class="pipe-num">7</div><div class="pipe-text"><strong>Visualização</strong><br>Vídeo anotado + GIF + melhor frame exportados</div></div>
+              <div class="pipe-arrow">↓</div>
+              <div class="pipe-step"><div class="pipe-num">8</div><div class="pipe-text"><strong>JSON → Frontend</strong><br>Resultado renderizado em cards interativos</div></div>
+            </div>
+          </div>
+
         </div>
-        <div class="card visual-card" id="bestCard" style="display:none">
-          <h2 class="section-title">📸 Melhor Frame</h2>
-          <p class="visual-caption">Verde: medido · Amarelo: postura ideal</p>
-          <img id="bestFrame" alt="Melhor frame com comparativo" class="visual-img">
-        </div>
-      </div>
+      </section>
+    </main>
 
-      <!-- Download -->
-      <div class="card download-card" id="downloadCard" style="display:none">
-        <a id="overlayDownload" href="#" download class="btn-download">
-          <span>⬇️</span> Baixar vídeo anotado
-        </a>
-      </div>
-    </section>
-  </main>
+    <footer class="app-footer">
+      <p>PosturaRun · Análise biomecânica de corrida com IA - CRIADO POR ALAN GALVÃO</p>
+    </footer>
+  </div><!-- /.app-shell -->
 
-  <footer class="app-footer">
-    <p>PosturaRun · Análise biomecânica de corrida com IA - CRIADO POR ALAN GALVÃO</p>
-  </footer>
-
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script src="/static/app.js"></script>
 </body>
 
