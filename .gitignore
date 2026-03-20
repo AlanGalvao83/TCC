@@ -1,0 +1,27 @@
+# Ambiente virtual Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Uploads temporários (não versionar)
+uploads/
+
+# Modelos baixados em runtime
+models/
+
+# Vídeos e imagens anotadas geradas em runtime
+public/annotated/
+
+# Arquivos de ambiente
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
