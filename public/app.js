@@ -110,6 +110,25 @@ if (btnTranscription && transcriptionContent) {
 }
 
 // ================================================================
+//  Mapa Mental Interativo
+// ================================================================
+const btnExpandAll   = document.getElementById('btnExpandAll')
+const btnCollapseAll = document.getElementById('btnCollapseAll')
+const mmBranches      = document.querySelectorAll('.mm-branch')
+
+if (btnExpandAll) {
+  btnExpandAll.addEventListener('click', () => {
+    mmBranches.forEach(b => b.open = true)
+  })
+}
+
+if (btnCollapseAll) {
+  btnCollapseAll.addEventListener('click', () => {
+    mmBranches.forEach(b => b.open = false)
+  })
+}
+
+// ================================================================
 //  Analisador de Postura
 // ================================================================
 const videoInput    = document.getElementById('videoInput')

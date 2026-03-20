@@ -823,6 +823,151 @@ body {
   margin-top: 8px;
 }
 
+/* ---- Mind Map ---- */
+.mindmap-card {
+  padding: 40px 20px;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #1a2333 0%, #0f1829 100%);
+}
+
+.mindmap-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.mm-node.mm-root {
+  text-align: center;
+  position: relative;
+}
+
+.mm-root > .mm-label {
+  background: var(--primary);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 20px;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  display: inline-block;
+  z-index: 10;
+  position: relative;
+}
+
+.mm-branches {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+}
+
+.mm-branch {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0;
+  min-width: 200px;
+  transition: transform .2s, box-shadow .2s;
+  cursor: pointer;
+}
+
+.mm-branch[open] {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  border-color: var(--primary);
+}
+
+.mm-summary {
+  list-style: none;
+  padding: 12px 16px;
+  font-weight: 700;
+  color: var(--text);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  outline: none;
+}
+
+.mm-summary::-webkit-details-marker {
+  display: none;
+}
+
+.mm-summary::after {
+  content: "▼";
+  font-size: 10px;
+  margin-left: auto;
+  transition: transform .2s;
+  color: var(--muted);
+}
+
+.mm-branch[open] .mm-summary::after {
+  transform: rotate(180deg);
+}
+
+.mm-sub-branches {
+  padding: 8px 16px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: mmFold .3s ease-out;
+}
+
+.mm-leaf {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 6px 10px;
+  background: var(--surface);
+  border-radius: 4px;
+  border-left: 2px solid var(--primary);
+}
+
+.mindmap-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.btn-mm-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.btn-mm-toggle:hover {
+  border-color: var(--primary);
+  color: var(--text);
+}
+
+@keyframes mmFold {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Conexões (opcional visual) */
+@media (min-width: 769px) {
+  .mm-root::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 2px;
+    background: var(--border);
+    transform: translateX(-50%);
+    z-index: 1;
+    display: none; /* Simplificado por agora para evitar desalinhamento */
+  }
+}
+
 .transcription-wrap {
   margin-top: 20px;
   border-top: 1px solid var(--border);

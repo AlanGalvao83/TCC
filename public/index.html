@@ -177,9 +177,63 @@
             <h1>🧠 Mapa Mental</h1>
             <p>Estrutura conceitual do projeto: tecnologias, conceitos biomecânicos e fluxo de análise.</p>
           </div>
-          <div class="card media-card">
-            <img src="/static/media/mapa-mental.png" alt="Mapa mental do projeto" class="media-full-img"
-              onerror="this.parentElement.innerHTML='<div class=\'media-placeholder\'>🧠<p>mapa-mental.png não encontrado</p><p class=\'hint\'>Copie o arquivo para <code>public/media/mapa-mental.png</code></p></div>'">
+          <div class="card mindmap-card">
+            <div class="mindmap-container">
+              <!-- Raiz -->
+              <div class="mm-node mm-root">
+                <div class="mm-label">🏃 PosturaRun</div>
+                
+                <div class="mm-branches">
+                  <!-- Tecnologias -->
+                  <details open class="mm-branch">
+                    <summary class="mm-summary">⚙️ Tecnologias</summary>
+                    <div class="mm-sub-branches">
+                      <div class="mm-leaf">🐍 FastAPI (Python 3.11)</div>
+                      <div class="mm-leaf">👁️ MediaPipe (BlazePose)</div>
+                      <div class="mm-leaf">📷 OpenCV + NumPy</div>
+                      <div class="mm-leaf">🚀 Docker + Railway</div>
+                    </div>
+                  </details>
+
+                  <!-- Biomecânica -->
+                  <details open class="mm-branch">
+                    <summary class="mm-summary">🦴 Biomecânica</summary>
+                    <div class="mm-sub-branches">
+                      <div class="mm-leaf">📍 33 Landmarks (Skeleton)</div>
+                      <div class="mm-leaf">📐 Geometria Vetorial (Arccos)</div>
+                      <div class="mm-leaf">🎯 Limiares Científicos</div>
+                      <div class="mm-leaf">〰️ Filtros (OneEuro/Butterworth)</div>
+                    </div>
+                  </details>
+
+                  <!-- Fluxo -->
+                  <details class="mm-branch">
+                    <summary class="mm-summary">🔄 Fluxo de Análise</summary>
+                    <div class="mm-sub-branches">
+                      <div class="mm-leaf">📤 Upload Multipart</div>
+                      <div class="mm-leaf">🕵️ Detecção de Humano</div>
+                      <div class="mm-leaf">🎞️ Processamento Temporal</div>
+                      <div class="mm-leaf">📝 Geração de Insight</div>
+                    </div>
+                  </details>
+
+                  <!-- TCC -->
+                  <details class="mm-branch">
+                    <summary class="mm-summary">🎓 Conteúdo TCC</summary>
+                    <div class="mm-sub-branches">
+                      <div class="mm-leaf">📊 Infográfico Visual</div>
+                      <div class="mm-leaf">🎙️ Podcast (IA & Esporte)</div>
+                      <div class="mm-leaf">📑 Documentação Técnica</div>
+                      <div class="mm-leaf">⚡ Analisador Prático</div>
+                    </div>
+                  </details>
+                </div>
+              </div>
+            </div>
+            <div class="mindmap-controls">
+              <button class="btn-mm-toggle" id="btnExpandAll">Expandir Tudo</button>
+              <button class="btn-mm-toggle" id="btnCollapseAll">Recolher Tudo</button>
+            </div>
           </div>
         </div>
       </section>
