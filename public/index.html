@@ -1,34 +1,121 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verificador de Postura de Corridas</title>
-<link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificador de Postura de Corrida</title>
+  <meta name="description" content="Analise sua postura de corrida com inteligência artificial. Upload de vídeo e feedback biomecânico instantâneo.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<div class="container">
-<h1>Verificador de Postura de Corridas</h1>
-<form id="uploadForm">
-<input type="file" id="videoInput" accept="video/*" required>
-<button type="submit">Analisar</button>
-</form>
-<div class="preview">
-<video id="previewVideo" controls></video>
-</div>
-<div class="overlay">
-<h2>Visualização anotada</h2>
-<div><a id="overlayDownload" href="#" download>Baixar vídeo anotado</a></div>
-<div class="overlay-gif">
-<img id="overlayGif" alt="Prévia anotada (GIF)">
-</div>
-<div class="best-frame">
-<h3>Melhor posição (lido vs ideal)</h3>
-<img id="bestFrame" alt="Melhor frame com comparativo">
-</div>
-</div>
-<div id="result"></div>
-</div>
-<script src="/static/app.js"></script>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🏃</span>
+        <span class="logo-text">PosturaRun</span>
+      </div>
+      <span class="badge">Beta</span>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Análise de <span class="gradient-text">Postura</span> de Corrida</h1>
+      <p class="hero-sub">Envie um vídeo da sua corrida e receba feedback biomecânico detalhado em segundos.</p>
+    </section>
+
+    <!-- Upload Card -->
+    <section class="card upload-card">
+      <form id="uploadForm">
+        <label class="drop-zone" id="dropZone" for="videoInput">
+          <div class="drop-icon">📹</div>
+          <div class="drop-text">
+            <span class="drop-main">Arraste seu vídeo aqui</span>
+            <span class="drop-sub">ou clique para selecionar</span>
+          </div>
+          <div class="file-name" id="fileName">MP4, MOV, AVI — até qualquer tamanho</div>
+          <input type="file" id="videoInput" accept="video/*" required>
+        </label>
+
+        <div class="preview-wrap" id="previewWrap" style="display:none">
+          <video id="previewVideo" controls playsinline></video>
+        </div>
+
+        <button type="submit" class="btn-analyze" id="btnAnalyze">
+          <span class="btn-icon">⚡</span>
+          <span class="btn-label">Analisar Postura</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- Loading -->
+    <div class="loading-wrap" id="loadingWrap" style="display:none">
+      <div class="spinner"></div>
+      <p class="loading-text">Analisando postura biomecânica…</p>
+      <p class="loading-sub">Isso pode levar alguns segundos dependendo do vídeo</p>
+    </div>
+
+    <!-- Result Section -->
+    <section id="resultSection" style="display:none">
+      <!-- Status Banner -->
+      <div class="status-banner" id="statusBanner">
+        <span class="status-icon" id="statusIcon"></span>
+        <div>
+          <div class="status-title" id="statusTitle"></div>
+          <div class="status-sub" id="statusSub"></div>
+        </div>
+      </div>
+
+      <!-- Angles Grid -->
+      <div class="card">
+        <h2 class="section-title">📐 Ângulos Medidos</h2>
+        <div class="angles-grid" id="anglesGrid"></div>
+      </div>
+
+      <!-- Issues & Corrections -->
+      <div class="issues-row">
+        <div class="card side-card">
+          <h2 class="section-title">🦵 Lado Esquerdo</h2>
+          <div id="issuesLeft"></div>
+          <div id="corrLeft"></div>
+        </div>
+        <div class="card side-card">
+          <h2 class="section-title">🦵 Lado Direito</h2>
+          <div id="issuesRight"></div>
+          <div id="corrRight"></div>
+        </div>
+      </div>
+
+      <!-- Visuals -->
+      <div class="visuals-grid" id="visualsGrid" style="display:none">
+        <div class="card visual-card" id="gifCard" style="display:none">
+          <h2 class="section-title">🎬 Prévia Anotada</h2>
+          <img id="overlayGif" alt="Prévia anotada (GIF)" class="visual-img">
+        </div>
+        <div class="card visual-card" id="bestCard" style="display:none">
+          <h2 class="section-title">📸 Melhor Frame</h2>
+          <p class="visual-caption">Verde: medido · Amarelo: postura ideal</p>
+          <img id="bestFrame" alt="Melhor frame com comparativo" class="visual-img">
+        </div>
+      </div>
+
+      <!-- Download -->
+      <div class="card download-card" id="downloadCard" style="display:none">
+        <a id="overlayDownload" href="#" download class="btn-download">
+          <span>⬇️</span> Baixar vídeo anotado
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>PosturaRun · Análise biomecânica de corrida com IA</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
 </body>
 </html>
