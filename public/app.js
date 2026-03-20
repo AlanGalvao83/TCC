@@ -15,6 +15,28 @@ const hamburger     = document.getElementById('hamburger')
 const sidebar       = document.getElementById('sidebar')
 const sidebarClose  = document.getElementById('sidebarClose')
 const overlay       = document.getElementById('sidebarOverlay')
+const appShell      = document.getElementById('appShell')
+const collapseBtn   = document.getElementById('sidebarCollapseBtn')
+
+// Sidebar Retrátil (Collapse/Expand)
+function toggleSidebarCollapse() {
+  const isCollapsed = sidebar.classList.toggle('collapsed')
+  appShell.classList.toggle('sidebar-collapsed')
+  localStorage.setItem('sidebarCollapsed', isCollapsed)
+}
+
+if (collapseBtn) {
+  collapseBtn.addEventListener('click', e => {
+    e.stopPropagation()
+    toggleSidebarCollapse()
+  })
+}
+
+// Restaurar estado inicial da sidebar
+if (localStorage.getItem('sidebarCollapsed') === 'true' && window.innerWidth > 768) {
+  sidebar.classList.add('collapsed')
+  appShell.classList.add('sidebar-collapsed')
+}
 
 function openSidebar()  { sidebar.classList.add('open');  overlay.classList.add('open') }
 function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open') }
@@ -68,6 +90,23 @@ if (typeof katex !== 'undefined') {
   renderMath()
 } else {
   window.addEventListener('load', renderMath)
+}
+
+// ================================================================
+//  Transcrição do Podcast
+// ================================================================
+const btnTranscription = document.getElementById('btnTranscription')
+const transcriptionContent = document.getElementById('transcriptionContent')
+
+if (btnTranscription && transcriptionContent) {
+  btnTranscription.addEventListener('click', () => {
+    const isHidden = transcriptionContent.style.display === 'none'
+    transcriptionContent.style.display = isHidden ? 'block' : 'none'
+    btnTranscription.textContent = isHidden ? '📖 Ocultar Transcrição' : '📜 Ver Transcrição'
+    if (isHidden) {
+      transcriptionContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  })
 }
 
 // ================================================================
