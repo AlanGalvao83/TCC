@@ -114,17 +114,17 @@ if (btnTranscription && transcriptionContent) {
 // ================================================================
 const btnExpandAll   = document.getElementById('btnExpandAll')
 const btnCollapseAll = document.getElementById('btnCollapseAll')
-const mmBranches      = document.querySelectorAll('.mm-branch')
+const mmItems         = document.querySelectorAll('.mm-item')
 
 if (btnExpandAll) {
   btnExpandAll.addEventListener('click', () => {
-    mmBranches.forEach(b => b.open = true)
+    mmItems.forEach(b => b.open = true)
   })
 }
 
 if (btnCollapseAll) {
   btnCollapseAll.addEventListener('click', () => {
-    mmBranches.forEach(b => b.open = false)
+    mmItems.forEach(b => b.open = false)
   })
 }
 

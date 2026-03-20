@@ -178,61 +178,94 @@
             <p>Estrutura conceitual do projeto: tecnologias, conceitos biomecânicos e fluxo de análise.</p>
           </div>
           <div class="card mindmap-card">
-            <div class="mindmap-container">
-              <!-- Raiz -->
-              <div class="mm-node mm-root">
-                <div class="mm-label">🏃 PosturaRun</div>
-                
-                <div class="mm-branches">
-                  <!-- Tecnologias -->
-                  <details open class="mm-branch">
-                    <summary class="mm-summary">⚙️ Tecnologias</summary>
-                    <div class="mm-sub-branches">
-                      <div class="mm-leaf">🐍 FastAPI (Python 3.11)</div>
-                      <div class="mm-leaf">👁️ MediaPipe (BlazePose)</div>
-                      <div class="mm-leaf">📷 OpenCV + NumPy</div>
-                      <div class="mm-leaf">🚀 Docker + Railway</div>
-                    </div>
-                  </details>
+            <div class="mm-header">
+              <h2 class="mm-title">Arquitetura de Análise Biomecânica de Corrida via IA</h2>
+              <p class="mm-subtitle">Com base em 16 fontes técnicas e científicas</p>
+            </div>
 
-                  <!-- Biomecânica -->
-                  <details open class="mm-branch">
-                    <summary class="mm-summary">🦴 Biomecânica</summary>
-                    <div class="mm-sub-branches">
-                      <div class="mm-leaf">📍 33 Landmarks (Skeleton)</div>
-                      <div class="mm-leaf">📐 Geometria Vetorial (Arccos)</div>
-                      <div class="mm-leaf">🎯 Limiares Científicos</div>
-                      <div class="mm-leaf">〰️ Filtros (OneEuro/Butterworth)</div>
-                    </div>
-                  </details>
-
-                  <!-- Fluxo -->
-                  <details class="mm-branch">
-                    <summary class="mm-summary">🔄 Fluxo de Análise</summary>
-                    <div class="mm-sub-branches">
-                      <div class="mm-leaf">📤 Upload Multipart</div>
-                      <div class="mm-leaf">🕵️ Detecção de Humano</div>
-                      <div class="mm-leaf">🎞️ Processamento Temporal</div>
-                      <div class="mm-leaf">📝 Geração de Insight</div>
-                    </div>
-                  </details>
-
-                  <!-- TCC -->
-                  <details class="mm-branch">
-                    <summary class="mm-summary">🎓 Conteúdo TCC</summary>
-                    <div class="mm-sub-branches">
-                      <div class="mm-leaf">📊 Infográfico Visual</div>
-                      <div class="mm-leaf">🎙️ Podcast (IA & Esporte)</div>
-                      <div class="mm-leaf">📑 Documentação Técnica</div>
-                      <div class="mm-leaf">⚡ Analisador Prático</div>
-                    </div>
-                  </details>
+            <div class="mindmap-horizontal">
+              <!-- Lado Esquerdo (Raiz) -->
+              <div class="mm-root-horizontal">
+                <div class="mm-node-main">
+                  Análise Biomecânica de Corrida via Visão Computacional
                 </div>
               </div>
-            </div>
-            <div class="mindmap-controls">
-              <button class="btn-mm-toggle" id="btnExpandAll">Expandir Tudo</button>
-              <button class="btn-mm-toggle" id="btnCollapseAll">Recolher Tudo</button>
+
+              <!-- Conexão Central (SVG de linhas curvas será adicionado via CSS ou JS se necessário, mas faremos via CSS moderno) -->
+              <div class="mm-connector">
+                <div class="mm-dot"></div>
+              </div>
+
+              <!-- Lado Direito (Categorias) -->
+              <div class="mm-branches-horizontal">
+                
+                <!-- 1. Arquitetura Técnica -->
+                <details class="mm-item">
+                  <summary class="mm-item-label">Arquitetura Técnica <span class="mm-arrow">></span></summary>
+                  <div class="mm-content">
+                    <div class="mm-leaf">FastAPI (Backend)</div>
+                    <div class="mm-leaf">MediaPipe Pose (IA)</div>
+                    <div class="mm-leaf">OpenCV & NumPy</div>
+                    <div class="mm-leaf">Docker & Railway</div>
+                  </div>
+                </details>
+
+                <!-- 2. Métricas Cinemáticas -->
+                <details class="mm-item">
+                  <summary class="mm-item-label">Métricas Cinemáticas <span class="mm-arrow">></span></summary>
+                  <div class="mm-content">
+                    <div class="mm-leaf">Landmarks (33 Pontos)</div>
+                    <div class="mm-leaf">Ângulos Articulares</div>
+                    <div class="mm-leaf">Coordenada Z (Profundidade)</div>
+                    <div class="mm-leaf">Centro de Gravidade</div>
+                  </div>
+                </details>
+
+                <!-- 3. Lógica de Correção Clínica -->
+                <details class="mm-item">
+                  <summary class="mm-item-label">Lógica de Correção Clínica <span class="mm-arrow">></span></summary>
+                  <div class="mm-content">
+                    <div class="mm-leaf">Limiares de Literatura</div>
+                    <div class="mm-leaf">Análise de Assimetria</div>
+                    <div class="mm-leaf">Dicas de Cadência</div>
+                    <div class="mm-leaf">Feedback de Postura</div>
+                  </div>
+                </details>
+
+                <!-- 4. Visualização e Feedback -->
+                <details class="mm-item">
+                  <summary class="mm-item-label">Visualização e Feedback <span class="mm-arrow">></span></summary>
+                  <div class="mm-content">
+                    <div class="mm-leaf">Vídeo Anotado</div>
+                    <div class="mm-leaf">Melhor Frame (Keyframe)</div>
+                    <div class="mm-leaf">GIF de Ciclo</div>
+                    <div class="mm-leaf">Dashboard Interativo</div>
+                  </div>
+                </details>
+
+                <!-- 5. Processamento de Sinais -->
+                <details class="mm-item">
+                  <summary class="mm-item-label">Processamento de Sinais <span class="mm-arrow">></span></summary>
+                  <div class="mm-content">
+                    <div class="mm-leaf">Mediana Temporal</div>
+                    <div class="mm-leaf">Filtro OneEuro</div>
+                    <div class="mm-leaf">Filtro Butterworth</div>
+                    <div class="mm-leaf">TCNs (Temporal Networks)</div>
+                  </div>
+                </details>
+
+                <!-- 6. Fases da Corrida -->
+                <details class="mm-item">
+                  <summary class="mm-item-label">Fases da Corrida <span class="mm-arrow">></span></summary>
+                  <div class="mm-content">
+                    <div class="mm-leaf">Apoio (Stance)</div>
+                    <div class="mm-leaf">Impacto Inicial (Loading)</div>
+                    <div class="mm-leaf">Propulsão (Push-off)</div>
+                    <div class="mm-leaf">Balanço (Swing)</div>
+                  </div>
+                </details>
+
+              </div>
             </div>
           </div>
         </div>

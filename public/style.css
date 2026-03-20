@@ -823,150 +823,208 @@ body {
   margin-top: 8px;
 }
 
-/* ---- Mind Map ---- */
+/* ---- Mind Map Horizontal (Premium) ---- */
 .mindmap-card {
-  padding: 40px 20px;
-  overflow: hidden;
-  background: radial-gradient(circle at center, #1a2333 0%, #0f1829 100%);
+  padding: 60px 40px;
+  background: #111827; /* Cor de fundo escura da imagem */
+  color: #f3f4f6;
+  overflow-x: auto;
 }
 
-.mindmap-container {
+.mm-header {
+  margin-bottom: 60px;
+  text-align: left;
+}
+
+.mm-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.mm-subtitle {
+  font-size: 16px;
+  color: #9ca3af;
+}
+
+.mindmap-horizontal {
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 400px;
-}
-
-.mm-node.mm-root {
-  text-align: center;
   position: relative;
+  min-width: 900px;
+  padding: 40px 0;
 }
 
-.mm-root > .mm-label {
-  background: var(--primary);
-  color: white;
-  padding: 16px 32px;
-  border-radius: 50px;
-  font-weight: 800;
-  font-size: 20px;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-  display: inline-block;
+.mm-root-horizontal {
+  flex-shrink: 0;
   z-index: 10;
+}
+
+.mm-node-main {
+  background: #374151;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #e5e7eb;
+  border: 1px solid #4b5563;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-width: 280px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.mm-connector {
+  width: 80px;
+  height: 2px;
+  background: #4b5563;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mm-dot {
+  width: 8px;
+  height: 8px;
+  background: #6b7280;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mm-branches-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 0;
   position: relative;
 }
 
-.mm-branches {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 60px;
-  flex-wrap: wrap;
+/* Linhas curvas usando pseudo-elementos no container de branches */
+.mm-branches-horizontal::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 15px;
+  bottom: 15px;
+  width: 40px;
+  border-left: 2px solid #4b5563;
 }
 
-.mm-branch {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 0;
-  min-width: 200px;
-  transition: transform .2s, box-shadow .2s;
-  cursor: pointer;
+.mm-item {
+  position: relative;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  min-width: 240px;
+  transition: all 0.2s ease;
 }
 
-.mm-branch[open] {
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+.mm-item[open] {
   border-color: var(--primary);
+  background: #111827;
 }
 
-.mm-summary {
+.mm-item-label {
   list-style: none;
   padding: 12px 16px;
-  font-weight: 700;
-  color: var(--text);
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #d1d5db;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   outline: none;
 }
 
-.mm-summary::-webkit-details-marker {
+.mm-item-label::-webkit-details-marker {
   display: none;
 }
 
-.mm-summary::after {
-  content: "▼";
-  font-size: 10px;
-  margin-left: auto;
-  transition: transform .2s;
-  color: var(--muted);
+.mm-arrow {
+  font-size: 12px;
+  color: #6b7280;
+  transition: transform 0.2s;
 }
 
-.mm-branch[open] .mm-summary::after {
-  transform: rotate(180deg);
+.mm-item[open] .mm-arrow {
+  transform: rotate(90deg);
 }
 
-.mm-sub-branches {
-  padding: 8px 16px 16px;
-  border-top: 1px solid var(--border);
+.mm-content {
+  padding: 12px 16px;
+  border-top: 1px solid #374151;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  animation: mmFold .3s ease-out;
+  background: #111827;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .mm-leaf {
   font-size: 13px;
-  color: var(--muted);
-  padding: 6px 10px;
-  background: var(--surface);
-  border-radius: 4px;
-  border-left: 2px solid var(--primary);
+  color: #9ca3af;
+  padding-left: 12px;
+  position: relative;
 }
 
-.mindmap-controls {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 30px;
+.mm-leaf::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
 }
 
-.btn-mm-toggle {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 11px;
-  cursor: pointer;
-  transition: all .2s;
+/* Ajuste das linhas para cada item */
+.mm-item {
+  margin-left: 40px;
 }
 
-.btn-mm-toggle:hover {
-  border-color: var(--primary);
-  color: var(--text);
+.mm-item::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  width: 40px;
+  height: 2px;
+  background: #4b5563;
 }
 
-@keyframes mmFold {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Curvas aproximadas via border-radius nas extremidades das linhas verticais (complexo via CSS puro, mas faremos o melhor) */
+.mm-branches-horizontal::after {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 15px;
+  width: 10px;
+  height: 10px;
+  /* Visual de curva seria via border-top-left, mas deixaremos reto por simplicidade estrutural que ainda fica premium */
 }
 
-/* Conexões (opcional visual) */
-@media (min-width: 769px) {
-  .mm-root::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 80%;
-    height: 2px;
-    background: var(--border);
-    transform: translateX(-50%);
-    z-index: 1;
-    display: none; /* Simplificado por agora para evitar desalinhamento */
+@media (max-width: 768px) {
+  .mindmap-horizontal {
+    flex-direction: column;
+    min-width: unset;
+  }
+  .mm-connector {
+    width: 2px;
+    height: 40px;
+  }
+  .mm-branches-horizontal::before, 
+  .mm-item::before {
+    display: none;
+  }
+  .mm-item {
+    margin-left: 0;
   }
 }
+
+/* Fim do Mapa Mental Premium */
 
 .transcription-wrap {
   margin-top: 20px;
