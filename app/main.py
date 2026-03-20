@@ -1,10 +1,9 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import uuid
-import shutil
 import os
 from .pose_analysis import process_video
 
@@ -21,25 +20,34 @@ app = FastAPI(title="Verificador de Postura de Corridas")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,   # deve ser False quando allow_origins=["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 app.mount("/static", StaticFiles(directory=str(public_dir)), name="static")
 
+
 @app.get("/")
 def index():
     index_path = public_dir / "index.html"
+    if not index_path.exists():
+        raise HTTPException(status_code=404, detail="index.html não encontrado")
     return FileResponse(str(index_path))
+
 
 @app.post("/analyze")
 async def analyze_video(file: UploadFile = File(...)):
-    ext = Path(file.filename).suffix.lower() or ".mp4"
+    # Garante extensão válida mesmo que o cliente não envie nome de arquivo
+    filename = file.filename or "video.mp4"
+    ext = Path(filename).suffix.lower() or ".mp4"
     tmp_name = f"{uuid.uuid4().hex}{ext}"
     tmp_path = uploads_dir / tmp_name
-    with tmp_path.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+
+    # Leitura assíncrona para não bloquear o event loop
+    contents = await file.read()
+    tmp_path.write_bytes(contents)
+
     try:
         result = process_video(str(tmp_path))
         return JSONResponse(result)
