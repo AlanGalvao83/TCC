@@ -1,8 +1,8 @@
 fastapi==0.115.4
 uvicorn[standard]==0.32.0
-mediapipe==0.10.32
-opencv-python-headless
-numpy
+mediapipe==0.10.21
+opencv-python-headless==4.10.0.84
+numpy==1.26.4
 python-multipart==0.0.22
-imageio[ffmpeg]
-Pillow
+imageio[ffmpeg]==2.36.1
+Pillow==11.0.0
